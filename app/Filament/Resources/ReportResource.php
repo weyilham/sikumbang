@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources;
 
+use App\Filament\Exports\ReportExporter;
 use App\Filament\Resources\ReportResource\Pages;
 use App\Filament\Resources\ReportResource\RelationManagers;
 use App\Models\Report;
@@ -9,6 +10,7 @@ use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Tables\Actions\ExportAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
@@ -38,17 +40,30 @@ class ReportResource extends Resource
                 ->label('Nama Anak')
                 ->sortable()
                 ->searchable(),
+                TextColumn::make('children.parent_name') // Nama kategori dari relasi
+                ->label('Nama Orang Tua'),
+                TextColumn::make('children.birth_date') // Nama kategori dari relasi
+                ->label('Tgl Lahir Anak'),
+                TextColumn::make('value')
+                ->badge()
+                ->color(fn (string $state): string => match ($state) {
+                    'Sesuai umur' => 'success',
+                    'Meragukan' => 'warning',
+                    'Ada kemungkinan penyimpangan!' => 'danger',
+                })
+                ->label('Hasil')
+                ->searchable()
+                ->sortable(),
+                TextColumn::make('description')
+                ->label('Deskripsi')
+                ->wrap()// Nama kategori dari relasi
+                
             ])
             ->filters([
                 //
             ])
-            ->actions([
-                Tables\Actions\EditAction::make(),
-            ])
-            ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
-                ]),
+            ->headerActions([
+                ExportAction::make()->exporter(ReportExporter::class),
             ]);
     }
 

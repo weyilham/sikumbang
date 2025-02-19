@@ -80,6 +80,10 @@
         <div id="sessionSuccess" data-success="{{ session('success') }}"></div>
     @endif
 
+    @if (session('error'))
+        <div id="sessionError" data-error="{{ session('error') }}"></div>
+    @endif
+
 
     @if (session('children_id'))
         <!-- ketika sudah input data -->
@@ -347,12 +351,22 @@
     <script type="text/javascript">
         $(document).ready(function() {
             const session = $('#sessionSuccess').data('success');
+            const sessionError = $('#sessionError').data('error');
+
 
             if (session) {
                 Swal.fire({
                     title: "Good job!",
                     text: "Data added successfully!",
                     icon: "success"
+                });
+            }
+
+            if (sessionError) {
+                Swal.fire({
+                    icon: "error",
+                    title: "Umur Anak Melebihi Batas Skrining!",
+                    text: "Umur Anak Maximal 72 Bulan atau 6 Tahun ",
                 });
             }
             //test sweatalert

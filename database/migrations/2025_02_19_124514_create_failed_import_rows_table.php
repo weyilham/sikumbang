@@ -11,20 +11,20 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('reports', function (Blueprint $table) {
+        Schema::create('failed_import_rows', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('children_id')->constrained('childrens')->onDelete('cascade');
-            $table->string('value')->nullable();
-            $table->text('description')->nullable();
+            $table->json('data');
+            $table->foreignId('import_id')->constrained()->cascadeOnDelete();
+            $table->text('validation_error')->nullable();
             $table->timestamps();
         });
-        
     }
+
     /**
      * Reverse the migrations.
      */
     public function down(): void
     {
-        Schema::dropIfExists('reports');
+        Schema::dropIfExists('failed_import_rows');
     }
 };

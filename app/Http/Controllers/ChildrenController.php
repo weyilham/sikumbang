@@ -50,8 +50,14 @@ class ChildrenController extends Controller
                                 ->first();
             
             
-            if($category->id){
+            
+            if(!$category){
+                return redirect('/#kuisioner')->with([
+                    'error' => 'Anak Wajib Maximal Umur 5 Tahun!' // Mengirim kategori ke view
+                ]);
+            } else {
                 $quetions = $category->questions;
+
             }
 
             // dd($quetions);
