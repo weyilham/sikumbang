@@ -13,5 +13,9 @@ class Children extends Model
     {
         return $this->hasMany(Answer::class, 'children_id');
     }
+
+    public function reports() {
+        return $this->hasMany(Report::class, 'children_id');
+    }
    
 }
